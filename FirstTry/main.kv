@@ -1,0 +1,53 @@
+#: include kv/overviewscreen.kv
+#: include kv/currentmonthscreen.kv
+#: include kv/contentnavigationdrawer.kv
+#: include kv/homescreen.kv
+#: include kv/categoriessettingsscreen.kv
+#: include kv/addingtransactionscreen.kv
+#: import labels labels
+
+
+Screen:
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        title: labels.TITLE
+        elevation: 10
+        left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+        right_action_items: [["brightness-6", lambda x: app.switch_theme_style()]]
+
+        md_bg_color: .2, .2, .2, 0.9
+        specific_text_color: 1, 1, 1, 1
+
+    MDNavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            size_hint_y: None
+            height: root.height-toolbar.height
+            id: screen_manager
+
+            HomeScreen:
+                name: "home_screen"
+
+            CategoriesSettingsScreen:
+                name: "categoriessettings_screen"
+
+            AddingTransactionScreen:
+                name: "addingtransaction_screen"
+
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
+
+    MDFloatingActionButton:
+        icon: "plus"
+
+        pos_hint: {"center_x": 0.95, "center_y": 0.06}
+
+

@@ -1,0 +1,35 @@
+#: import labels labels
+
+<ContentNavigationDrawer>:
+    BoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            id: contentnavigationdrawer_mdlabel
+            #
+            #
+            # DISPLAY HERE THE ACTUAL DATE AND TIME
+            #
+            #
+            #   ↓
+            text: "     "+labels.DATE
+            font_size: 30
+            size_hint_y: None
+        MDLabel:
+            id: contentnavigationdrawer_mdlabel2
+            text: "     "+ labels.TIME
+            font_size: 20
+            size_hint_y: None
+
+        ScrollView:
+            MDList:
+                OneLineListItem:
+                    text: labels.MDHomeScreen
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current="home_screen"
+
+                OneLineListItem:
+                    text: labels.MDCategoriesSettingsScreen
+                    on_release:
+                        root.nav_drawer.set_state("close")
+                        root.screen_manager.current="categoriessettings_screen"

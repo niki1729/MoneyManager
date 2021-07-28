@@ -1,0 +1,52 @@
+#: import environ os.environ
+#: import gch kivy.utils.get_color_from_hex
+
+
+<RegisterScreen>
+    canvas:
+        Color:
+            rgba: gch("33333d")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        spacing: dp(80)
+        padding: dp(30)
+        pos_hint: {"center_x": .5}
+
+        Image:
+            source: f"{environ['APP_ROOT']}/assets/images/MMApp.png"
+            pos_hint: {"center_x": .5}
+            size_hint: None, None
+
+        MDBoxLayout:
+            adaptive_height: True
+            orientation: "vertical"
+            spacing: dp(20)
+
+            MMAppTextField:
+                id: register_username
+                hint_text: "Username"
+
+            MMAppTextField:
+                id: register_password
+                hint_text: "Password"
+                password: True
+                password_mask: "•"
+
+            MDIconButton:
+                icon: "arrow-right-bold-outline"
+                pos_hint: {"center_x": .5}
+                user_font_size: dp(62)
+                on_press: root.control_password()
+
+
+
+
+<MMAppTextField@MDTextField>
+    mode: 'fill'
+    line_anim: False
+    fill_color: (0, 0, 0, .4)

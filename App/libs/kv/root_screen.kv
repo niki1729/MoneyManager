@@ -1,0 +1,45 @@
+#: import environ os.environ
+#: import gch kivy.utils.get_color_from_hex
+
+#: import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
+
+#: import NavigationItem libs.baseclass.tabnavigation.NavigationItem
+#: import NavigationBar libs.baseclass.tabnavigation.NavigationBar
+
+#: import OverviewScreen libs.baseclass.overview_screen.OverviewScreen
+#: import CurrentMonthScreen libs.baseclass.currentmonth_screen.CurrentMonthScreen
+
+<RootScreen>
+    md_bg_color: gch("#33333d")
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        NavigationBar:
+            id: nav_bar
+
+            NavigationItem:
+                text: "OVERVIEW"
+                icon: "chart-pie"
+                on_release:
+                    scr_manager.transition.direction = "right"
+                    scr_manager.current = "OVERVIEW"
+
+
+            NavigationItem:
+                text: "SETTINGS"
+                icon: "cog"
+                on_release:
+                    scr_manager.transition.direction = "left"
+                    scr_manager.current = "CURRENT MONTH"
+
+        ScreenManager:
+            id: scr_manager
+
+            OverviewScreen:
+                name: "OVERVIEW"
+
+
+
+            CurrentMonthScreen:
+                name: "CURRENT MONTH"

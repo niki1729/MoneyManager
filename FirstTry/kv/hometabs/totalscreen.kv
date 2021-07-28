@@ -1,0 +1,20 @@
+<TotalScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        TotalLabel:
+            text: "Balance"
+        TotalLabel:
+            text: "Earnings"
+        TotalLabel:
+            text: "Spend"
+        Label:
+            text: "Spend on:"
+            size_hint_y:0.1
+        ScrollView:
+            size_hint_y: 0.45
+            MDList:
+                #orientation: "vertical"
+                id: boxlayout_totalscreen
+                # root.add_categories_widgets()
+                Label:
+                    text: categories.category1.name
