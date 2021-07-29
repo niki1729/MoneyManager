@@ -8,6 +8,10 @@
 
 #: import OverviewScreen libs.baseclass.overview_screen.OverviewScreen
 #: import CurrentMonthScreen libs.baseclass.currentmonth_screen.CurrentMonthScreen
+#: import TransactionListScreen libs.baseclass.transactionlist_screen.TransactionListScreen
+#: import AccountsScreen libs.baseclass.accounts_screen.AccountsScreen
+#: import TotalScreen libs.baseclass.total_screen.TotalScreen
+#: import SettingsScreen libs.baseclass.settings_screen.SettingsScreen
 
 <RootScreen>
     md_bg_color: gch("#33333d")
@@ -27,11 +31,39 @@
 
 
             NavigationItem:
+                text: "CUR. MONTH"
+                icon: "calendar-month-outline"
+                on_release:
+                    scr_manager.transition.direction = "left"
+                    scr_manager.current = "CURRENT MONTH"
+
+            NavigationItem:
+                text: "LIST"
+                icon: "view-list-outline"
+                on_release:
+                    scr_manager.transition.direction = "left"
+                    scr_manager.current = "TRANSACTION LIST"
+
+            NavigationItem:
+                text: "ACCOUNTS"
+                icon: "currency-usd"
+                on_release:
+                    scr_manager.transition.direction = "left"
+                    scr_manager.current = "ACCOUNTS"
+
+            NavigationItem:
+                text: "TOTAL"
+                icon: "bank"
+                on_release:
+                    scr_manager.transition.direction = "left"
+                    scr_manager.current = "TOTAL"
+
+            NavigationItem:
                 text: "SETTINGS"
                 icon: "cog"
                 on_release:
                     scr_manager.transition.direction = "left"
-                    scr_manager.current = "CURRENT MONTH"
+                    scr_manager.current = "SETTINGS"
 
         ScreenManager:
             id: scr_manager
@@ -39,7 +71,22 @@
             OverviewScreen:
                 name: "OVERVIEW"
 
-
-
             CurrentMonthScreen:
                 name: "CURRENT MONTH"
+
+            TransactionListScreen:
+                name: "TRANSACTION LIST"
+
+            AccountsScreen:
+                name: "ACCOUNTS"
+
+            TotalScreen:
+                name: "TOTAL"
+
+            SettingsScreen:
+                name: "SETTINGS"
+
+    MDFloatingActionButton:
+        icon: "plus"
+        on_release: root.adding_transaction_screen()
+        pos_hint: {"center_x": 0.95, "center_y": 0.06}

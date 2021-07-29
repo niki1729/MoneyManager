@@ -3,6 +3,7 @@ MoneyManager App
 
 """
 
+
 import os
 import sys
 from pathlib import Path
@@ -27,6 +28,7 @@ KV = """
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import RegisterScreen libs.baseclass.register_screen.RegisterScreen
 #:import RootScreen libs.baseclass.root_screen.RootScreen
+#: import AddingTransactionScreen libs.baseclass.addingtransactionscreen.AddingTransactionScreen
 
 ScreenManager:
     transition: FadeTransition()
@@ -36,6 +38,9 @@ ScreenManager:
 
     RootScreen:
         name: "mmapp root screen"
+    
+    AddingTransactionScreen:
+        name: "mmapp transaction screen"
 
 """
 
@@ -46,7 +51,7 @@ class MoneyManager(MDApp):
         self.icon = f"{os.environ['APP_ROOT']}/assets/images/MMApp.png"
 
     def build(self):
-        self.theme_cls.primary_palette = "Green"
+        self.theme_cls.primary_palette = "Teal"
         self.theme_cls.theme_style = "Dark"
 
         return Builder.load_string(KV)
