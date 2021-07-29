@@ -34,28 +34,36 @@
                 text: "CUR. MONTH"
                 icon: "calendar-month-outline"
                 on_release:
-                    scr_manager.transition.direction = "left"
+                    scr_manager.transition.direction = "left" \
+                    if scr_manager.current in ["OVERVIEW"] \
+                    else "right"
                     scr_manager.current = "CURRENT MONTH"
 
             NavigationItem:
                 text: "LIST"
                 icon: "view-list-outline"
                 on_release:
-                    scr_manager.transition.direction = "left"
+                    scr_manager.transition.direction = "right" \
+                    if scr_manager.current in ["ACCOUNTS", "TOTAL", "SETTINGS"] \
+                    else "left"
                     scr_manager.current = "TRANSACTION LIST"
 
             NavigationItem:
                 text: "ACCOUNTS"
                 icon: "currency-usd"
                 on_release:
-                    scr_manager.transition.direction = "left"
+                    scr_manager.transition.direction = "right" \
+                    if scr_manager.current in ["TOTAL", "SETTINGS"] \
+                    else "left"
                     scr_manager.current = "ACCOUNTS"
 
             NavigationItem:
                 text: "TOTAL"
                 icon: "bank"
                 on_release:
-                    scr_manager.transition.direction = "left"
+                    scr_manager.transition.direction = "right" \
+                    if scr_manager.current in ["SETTINGS"] \
+                    else "left"
                     scr_manager.current = "TOTAL"
 
             NavigationItem:

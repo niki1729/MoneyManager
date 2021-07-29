@@ -2,7 +2,7 @@
     MDBoxLayout:
         orientation: "vertical"
         MDToolbar:
-            title: "add"
+            title: "Add a Transaction"
             id: toolbar
             pos_hint: {"top": 1}
         
@@ -13,24 +13,78 @@
         FloatLayout:
             BoxLayout:
                 orientation: "vertical"
-                Label:
-                    id: date_and_time
-                    text:""
-                    font_size: 30
-                Label:
-                    id: welcome_label
-                    text: "Welcome to Transaction!"
-                    font_size: 40
-                    color: 1,0,1,1
-                Button:
-                    text: "Press me for fun"
-                    color: 1, 1, 0, 1
-                    color_before: 1,0,0,1
-                    background_down: "grey_color.png"
-                    on_release: root.change_color()
+                BoxLayout:
+                    size_hint_y: 1
+                    orientation: "horizontal"
+
+                    PlaceHolderLabel:
+
+                    MDTextField:
+                        id: date_of_transaction_inp
+                        hint_text: "Date of the transaction"
+                        size_hint_x: 3
+                        font_size: 20
+
+                    PlaceHolderLabel:
+                        size_hint_x: 0.5
+
+                    MDTextField:
+                        id: time_of_transaction_inp
+                        hint_text: "Time of the transaction"
+                        size_hint_x: 3
+                        font_size: 20
+
+                    PlaceHolderLabel:
+
+
+                BoxLayout:
+                    size_hint_y: 5
+                    orientation: "vertical"
+                    BoxLayout:
+                        size_hint_y: 1
+                        id: boxlayout_every_month_payment
+
+                        Label:
+                            size_hint_x: 3
+                            text: "Payment is due each month"
+
+                        MDCheckbox:
+                            size_hint_x: 1
+                            id: checkbox_every_month
+                            on_active: root.every_month_payment(*args)
+                            pos_hint: {"center_x": 0.1}
+
+                        PlaceHolderLabel:
+                            size_hint_x: 1.5
+                            text: "on the: "
+
+                        MDTextField:
+                            size_hint_x: 3
+                            id: every_month_payment_date_text_field
+                            text_hint: "Date when the monthly payment is due"
+                            disabled: True
+
+                        PlaceHolderLabel:
+
+
+                    Label:
+                        size_hint_y: 2
+                        id: welcome_label
+                        text: "Welcome to Transaction!"
+                        font_size: 40
+                        color: 1,0,1,1
+                    Button:
+                        size_hint_y: 2
+                        text: "Press me for fun"
+                        color: 1, 1, 0, 1
+                        color_before: 1,0,0,1
+                        background_down: "grey_color.png"
+                        on_release: root.change_color()
 
 
         
+<PlaceHolderLabel@Label>:
+    size_hint_x: 1
 
 
 
