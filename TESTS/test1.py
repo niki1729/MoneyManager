@@ -132,7 +132,15 @@ def parser_string_to_transaction_item1(liste):
 
 print("result:" + parser_string_to_transaction_item1(l))
 """
-l=["1", "2", "3"]
+"""l=["1", "2", "3"]
 l.pop(2)
 # l.remove("2")
-print(l)
+print(l)"""
+
+"""l=[['200', '30.07.21', '08:32:26', 'name2', 'car', '3007210832267783645'], ['300', '30.07.21', '08:32:26', 'name3', 'car', '3007210832268081910']]
+print(l[1][0])
+l[1][0]=280
+print(l)"""
+
+if 4.0 == 4:
+    print("yes")
