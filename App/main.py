@@ -3,7 +3,6 @@ MoneyManager App
 
 """
 
-
 import os
 import sys
 from pathlib import Path
@@ -45,6 +44,7 @@ ScreenManager:
 
 """
 
+
 class MoneyManager(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -59,3 +59,8 @@ class MoneyManager(MDApp):
 
 
 MoneyManager().run()
+
+
+# TODO: on_enter: if not len(rv.data): root.function here you can have on enter function in the .kv file
+"""spacing: "10dp"
+padding: "20dp"""

@@ -1,9 +1,9 @@
-def init_exemple():
+def init_example():
     lc = open("usr_data/list_accounts.txt", "w")
-    lc.writelines(str(["credit1", 1234, 150, 2]) + "\n")
     lc.writelines(str(["cash", 4564, 10.30, 1]) + "\n")
+    lc.writelines(str(["credit1", 1234, 150, 2]) + "\n")
     lc.writelines(str(["debit1", 1232, 100.64, 3]) + "\n")
-    lc.writelines(str(["home_savings", 7898, 10000, 4]) + "\n")
+    lc.writelines(str(["home_savings", 7898, 100.01, 4]) + "\n")
 
 
 class AccountsControl:
@@ -35,15 +35,19 @@ class AccountsControl:
             intermediate = self.parser_string_to_account_item(i[:-1])
             self.list_accounts.append(Account(intermediate[0], intermediate[1], intermediate[2], intermediate[3]))
         print(self.list_accounts, "after parsing and creating objects")
+        for i in range(len(self.list_accounts)):
+            print(self.list_accounts[i].name, end="     ")
+        print("names first")
 
     def add_category(self, name, last_4_digits, amount, priority):
         """
         :param name: of the category
         :param last_4_digits: the last for digits of the acc, so you can see what acc it is, it's not necessary
-        :param amount: what is the max to spend
+        :param amount: how much is there
         :param priority: will be needed when sorting for example in the AddTransactionScreen, to give the most
             used first
         """
+        # TODO: need one function that will control if the data in the input is correct
         self.list_accounts.append(Account(name, last_4_digits, amount, priority))
 
     def delete_category(self, index):
@@ -58,6 +62,9 @@ class AccountsControl:
         and if there (in the txt file) were more categories then we just overwrtie the last entires in the .txt file
         with empty strings ("")
         """
+        self.list_accounts = self.list_accounts_by_priority()
+        print(self.list_accounts, "save_listaccouns_to file")
+
         len_txt_file = self.get_len_list_accounts()
         len_accounts_list_work = len(self.list_accounts)
 
@@ -85,11 +92,13 @@ class AccountsControl:
             if self.list_accounts[i].name == name:
                 return self.list_accounts[i]
 
-    def find_prioraty(self, prio):
+    def find_priority(self, prio):
         """
         :param prio: the priority that is needed
         :return: gives the index from self.list_accounts back
         """
+        # TODO: need on function that can tell the highest/lowest priority and rearrange priorities
+
         for i in range(len(self.list_accounts)):
             if float(self.list_accounts[i].priority) == prio:
                 return i
@@ -101,12 +110,39 @@ class AccountsControl:
         :return: list of Account objects sorted by priority
         """
         result = []
-        for i in range(len(self.list_accounts) + 1):
+        for i in range(self.list_accounts[self.lowest_priority()].priority + 1):
             try:
-                result.append(self.list_accounts[self.find_prioraty(i)])
+                result.append(self.list_accounts[self.find_priority(i)])
             except:
                 pass
-        print(result)
+        return result
+
+    def highest_priority(self):
+        """
+        index must be set to 0 because if the first one has the highest priority, then if index is set to None, the
+        return is None, and we don't want it
+        :return gives the index from self.list_accounts back of the highest priority account
+        """
+
+        high_prio = self.list_accounts[0].priority
+        index = 0
+        for i in range(len(self.list_accounts)):
+            if self.list_accounts[i].priority < high_prio:
+                index = i
+                high_prio = self.list_accounts[i].priority
+        return index
+
+    def lowest_priority(self):
+        """
+        :return gives the index from self.list_accounts back of the lowest priority account
+        """
+        lowest_prio = self.list_accounts[0].priority
+        index = 0
+        for i in range(len(self.list_accounts)):
+            if self.list_accounts[i].priority > lowest_prio:
+                index = i
+                lowest_prio = self.list_accounts[i].priority
+        return index
 
     def change_account(self, name, index, new_info):
         """
@@ -115,6 +151,71 @@ class AccountsControl:
         :param new_info: it's clear
         """
         self.find_account_by_name(name).change_category_self(index, new_info)
+
+    def change_two_accounts_by_prio(self, ind1, ind2):
+        """
+        :param ind1:
+        :param ind2:
+        :return: nothing, the list now has different sorting
+        """
+
+        print(self.list_accounts, "in change two acc_by_prio")
+        interm = self.list_accounts[ind1].priority
+        self.list_accounts[ind1].priority = self.list_accounts[ind2].priority
+        self.list_accounts[ind2].priority = interm
+
+        self.list_accounts_by_priority()
+
+    def enter_after_prio(self, index, prio):
+        """
+        :param index: of the element that is already in the list but needs to change priority drastically
+        :param prio: the new prio
+        :return:
+        """
+        element = self.list_accounts[index]
+        print(self.list_accounts[index], "printed what need to be element")
+        print(element.name, "element, why without name")
+        print(self.list_accounts[self.highest_priority()].priority, "enter_after_prio")
+        self.list_accounts.pop(index)  # pop with index
+        print(self.list_accounts, "after pop")
+        if prio > self.list_accounts[self.lowest_priority()].priority:
+            element.priority = self.lowest_priority() - 1
+            print(element.priority, "element prio")
+            self.list_accounts.append(element)
+            self.change_priority_after_index(index)
+            print("prio>lowest")
+            return
+        if prio < self.list_accounts[self.highest_priority()].priority:
+            print("prio<highest prio")
+            result = [element]
+            for i in self.list_accounts:
+                result.append(i)
+
+            self.list_accounts = result
+            print(result)
+            return
+        else:
+            print("mid")
+            ind = 0
+            result = []
+            while self.list_accounts[ind].priority <= prio:
+                result.append(self.list_accounts[ind])
+                ind += 1
+            result.append(element)
+
+            for i in range(len(self.list_accounts) - ind):
+                result.append(self.list_accounts[i + ind])
+
+    def change_priority_after_index(self, ind):
+        """
+        this function will add to all self.list_accounts elements after the index +1 to priorities
+        :param ind: after what index from self.list_accounts the priority needs to change
+        :return: nothing, self.list_accounts has now new priorities
+        """
+        ind+=1
+        # TODO see better with +1 or -1 here
+        for i in range(len(self.list_accounts) - ind):
+            self.list_accounts[i + ind].priority += 1
 
     @staticmethod
     def get_len_list_accounts():
@@ -133,7 +234,7 @@ class AccountsControl:
     @staticmethod
     def parser_string_to_account_item(liste):
         """
-        :param liste: are the accounts item, that is a string in the .txt file so needs to be parsed
+        :param liste: are the account item, that is a string in the .txt file so needs to be parsed
         :return: list with the account item not a string list
         """
         result = []
@@ -171,7 +272,7 @@ class AccountsControl:
         except:
             pass
         try:
-            result.append(float("".join(last_4_digits)))
+            result.append(int("".join(last_4_digits)))
         except:
             result.append("")
         try:
@@ -179,7 +280,7 @@ class AccountsControl:
         except:
             result.append(0)
         try:
-            result.append((float("".join(priority))))
+            result.append((int("".join(priority))))
         except:
             result.append(100)
 
@@ -204,15 +305,28 @@ class Account:
             self.priority = new_info
 
 
-# init_exemple()
+init_example()
 ac = AccountsControl()
-# ac.add_category("debit2", "", "20.69", "")
+# ac.add_category("home saving", 7898, 1234.56, 10)
+# ac.save_listaccounts_to_file()
 # ac.delete_category(-1)
 # print(ac.list_accounts[-1].name)
-print(ac.find_account_by_name("cash"))
-print(ac.list_accounts)
-print(ac.list_accounts[ac.find_prioraty(1)])
-ac.list_accounts_by_priority()
-ac.change_account("cash", 2, 12.34)
-ac.change_account("debit2", 3, 10)
+# print(ac.find_account_by_name("cash"))
+# print(ac.list_accounts)
+# print(ac.list_accounts[ac.find_prioraty(1)])
+# ac.list_accounts_by_priority()
+# ac.change_account("cash", 2, 12.34)
+# ac.change_account("debit2", 3, 10)
+# print(ac.list_accounts[ac.highest_priority()].name, "highest prio")
+# print(ac.list_accounts[ac.find_priority(3)].name, "find prio")
+# print(ac.list_accounts[ac.lowest_priority()].name, "lowest prio")
+# print(ac.list_accounts_by_priority())
+"""for i in ac.list_accounts:
+    print(i.priority)"""
+# print(ac.highest_priority())
+# ac.change_two_accounts_by_prio(1, 4)
+# ac.change_two_accounts_by_prio(2, 5)
+ac.enter_after_prio(2, 1)
+# ac.change_priority_after_index(0)
+print(ac.list_accounts, "after enter_prio")
 ac.save_listaccounts_to_file()

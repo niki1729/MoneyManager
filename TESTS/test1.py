@@ -142,5 +142,140 @@ print(l[1][0])
 l[1][0]=280
 print(l)"""
 
-if 4.0 == 4:
-    print("yes")
+"""if 4.0 == 4:
+    print("yes")"""
+"""
+liste = [[1], [2], [3], [5]]
+
+
+def change_two_categories_by_prio(list, ind1, ind2):
+    interm = list[ind1][0]
+    list[ind1][0] = list[ind2][0]
+    list[ind2][0] = interm
+
+"""
+"""
+def enter_after_prio(list, element):
+    I have now 3 ifs (2 ifs and else) i think this can reduce execution time in some rare casses.
+    Need to ask
+    !!!ADD TO DO!!!!
+    :param list:
+    :param element: what we need to rearrange
+    :return: new arranged list
+    if element[0] > list[lowest_priority(list)][0]:
+        list.append(element)
+        return list
+    print(highest_priority(list))
+    if element[0] < list[highest_priority(list)][0]:
+        result = []
+        result.append(element)
+        for i in list:
+            i[0] = i[0] + 1
+            result.append(i)
+        return result
+
+    else:
+        ind=0
+        result=[]
+        while element[0]< list[ind][0]:
+            if element
+            result.append(list[ind])
+            ind +=1
+        result.append(element)
+        for i in range(len(list)-ind):
+            pass
+"""
+"""
+def highest_priority(list):
+
+    :return gives the index from list back of the highest priority account
+    
+    high_prio = list[0][0]
+    index = 0
+    for i in range(len(list)):
+        if list[i][0] < high_prio:
+            index = i
+    print(index, "index")
+    return index
+
+
+def lowest_priority(list):
+    
+    :return gives the index from self.list_accounts back of the lowest priority account
+    
+    lowest_prio = list[0][0]
+    index = 0
+    for i in range(len(list)):
+        if list[i][0] > lowest_prio:
+            index = i
+    return index
+
+
+# print(liste[lowest_priority(liste)][0])
+# liste = enter_after_prio(liste, [0])
+print(liste)
+"""
+
+
+def enter_after_prio(liste, index, prio):
+    """
+    :param list: will be later self
+    :param index: of the element that is already in the list but needs to change priority drastically
+    :param prio: the new prio
+    :return:
+    """
+    element = liste[index]
+    liste.pop(index)  # pop with index
+    if prio > liste[lowest_priority(liste)][0]:
+        liste.append(element)
+        return liste
+    print(prio, highest_priority(liste), "double", )
+    if prio < liste[highest_priority(liste)][0]:
+
+        result = []
+        result.append(element)
+        for i in liste:
+            result.append(i)
+        liste = result
+        print(result)
+        return liste
+
+    else:
+        ind = 0
+        result = []
+        while liste[ind][0] <= prio:
+            result.append(liste[ind])
+            ind += 1
+        result.append(element)
+
+        for i in range(len(liste) - ind):
+            result.append(liste[i + ind])
+        return result
+
+
+def highest_priority(liste):
+    high_prio = liste[0][0]
+    index = 0
+    for i in range(len(liste)):
+        if liste[i][0] < high_prio:
+            index = i
+            high_prio = liste[i][0]
+    print(high_prio)
+    print(index, "index")
+    return index
+
+
+def lowest_priority(liste):
+    lowest_prio = liste[0][0]
+    index = 0
+    for i in range(len(liste)):
+        if liste[i][0] > lowest_prio:
+            index = i
+            lowest_prio = liste[i][0]
+    return index
+
+
+liste = [[1, "1"], [2, "2"], [3, "3"], [5, "5"]]
+
+liste = enter_after_prio(liste, 1, 3)
+print(liste)

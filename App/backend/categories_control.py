@@ -3,7 +3,10 @@ def init_exemple():
     lc.writelines(str(["rent", 500, 1000, 3]) + "\n")
     lc.writelines(str(["clothing", 20.40, 50, 2]) + "\n")
     lc.writelines(str(["groceries", 50, 170, 1]) + "\n")
+    lc.writelines(str(["sport", 15, 45, 30]) + "\n")
+    lc.writelines(str(["dance", 30, 70, 4]) + "\n")
     lc.close()
+
 
 class CategoriesControl:
     """
@@ -29,10 +32,14 @@ class CategoriesControl:
     def get_list_categ_from_txt(self):
         """creates a list of Category Objects from the .txt file"""
         list_cat = open("usr_data/list_categories.txt", "r")
+
         for i in list_cat:
             intermediate = self.parser_string_to_category_item(i[:-1])
             self.list_categories.append(Category(intermediate[0], intermediate[1], intermediate[2], intermediate[3]))
         print(self.list_categories, "after parsing and creating objects")
+        for i in range(len(self.list_categories)):
+            print(self.list_categories[i].name, end="     ")
+        print("names first")
 
     def add_category(self, name, spend_this_month, max_per_month, priority):
         """
@@ -42,6 +49,7 @@ class CategoriesControl:
         :param priority: will be needed when sorting for example in the AddTransactionScreen, to give the most
             used first
         """
+        # TODO: need one function that will control if the data in the input is correct
         self.list_categories.append(Category(name, spend_this_month, max_per_month, priority))
 
     def delete_category(self, index):
@@ -56,6 +64,9 @@ class CategoriesControl:
         and if there (in the txt file) were more categories then we just overwrtie the last entires in the .txt file
         with empty strings ("")
         """
+        self.list_categories = self.list_categories_by_priority()
+        print(self.list_categories, "save_listaccouns_to file")
+
         len_txt_file = self.get_len_list_categories()
         len_transaction_list_work = len(self.list_categories)
 
@@ -88,6 +99,7 @@ class CategoriesControl:
         :param prio: the priority that is needed
         :return: gives the index from self.list_categories back
         """
+        # TODO: need on function that can tell the highest/lowest priority and rearrange priorities
         for i in range(len(self.list_categories)):
             if float(self.list_categories[i].priority) == prio:
                 return i
@@ -99,12 +111,38 @@ class CategoriesControl:
         :return: list of Category objects sorted by priority
         """
         result = []
-        for i in range(len(self.list_categories) + 1):
+        for i in range(self.list_categories[self.lowest_priority()].priority + 1):
+            # TODO: see what is wrong here and why +2 and not +1
             try:
                 result.append(self.list_categories[self.find_prioraty(i)])
             except:
                 pass
-        print(result)
+        return result
+
+    def highest_priority(self):
+        """
+        :return gives the index from self.list_categories back of the highest priority account
+        """
+        high_prio = self.list_categories[0].priority
+        index = None
+        for i in range(len(self.list_categories)):
+            if self.list_categories[i].priority < high_prio:
+                index = i
+                high_prio=self.list_categories[i].priority
+        return index
+
+    def lowest_priority(self):
+        """
+        :return gives the index from self.list_categories back of the lowest priority account
+        """
+        lowest_prio = self.list_categories[0].priority
+        index = 0
+        for i in range(len(self.list_categories)):
+
+            if self.list_categories[i].priority > lowest_prio:
+                lowest_prio = self.list_categories[i].priority
+                index = i
+        return index
 
     def change_category(self, name, index, new_info):
         """
@@ -113,6 +151,21 @@ class CategoriesControl:
         :param new_info: it's clear
         """
         self.find_category_by_name(name).change_category_self(index, new_info)
+
+    def change_two_categories_by_prio(self, ind1, ind2):
+        """
+        :param ind1:
+        :param ind2:
+        :return: nothing, the list now has different sorting
+        """
+
+        print(self.list_categories, "in change two cat_by_prio")
+        interm = self.list_categories[ind1].priority
+        print(interm, self.list_categories[ind1].name, self.list_categories[ind2].name)
+        self.list_categories[ind1].priority = self.list_categories[ind2].priority
+        self.list_categories[ind2].priority = interm
+
+        self.list_categories_by_priority()
 
     @staticmethod
     def get_len_list_categories():
@@ -168,7 +221,7 @@ class CategoriesControl:
         result.append("".join(name))
         result.append(float("".join(spend_this_month)))
         result.append(float("".join(max_per_month)))
-        result.append((float("".join(priority))))
+        result.append(int("".join(priority)))
 
         return result
 
@@ -199,12 +252,15 @@ class Category:
 
 # init_exemple()
 cc = CategoriesControl()
-# cc.add_category("dance", 15, 45, 4)
+# cc.add_category("sport", 15, 45, 30)
+# print(cc.list_categories[cc.lowest_priority()].name)
 # print(cc.list_categories[3].name, "last")
 # cc.get_len_list_categories()
 # cc.delete_category(-1)
-print(cc.list_categories)
-cc.change_category("rent", 2, 2000)
+# print(cc.list_categories, "printcc-list categories")
+# cc.change_category("rent", 2, 2000)
+# cc.list_categories_by_priority()
+# print(cc.find_category_by_name("dance"))
+cc.change_two_categories_by_prio(1, 4)
+cc.change_two_categories_by_prio(3, 2)
 cc.save_listcategories_to_file()
-cc.list_categories_by_priority()
-print(cc.find_category_by_name("dance"))
