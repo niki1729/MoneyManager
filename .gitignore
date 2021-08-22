@@ -1,0 +1,11 @@
+venv
+.idea
+demos
+kivymd.pdf
+*__pycache__
+*.git
+*.gitignore
+Documentations
+*crane_separated
+*rally_separated
+Gimp_creations
