@@ -1,12 +1,12 @@
 import time
 from random import randint
 
-list_transaction = open("usr_data/list_transactions.txt", "a")
+list_transaction = open("backend/usr_data/list_transactions.txt", "a")
 list_transaction.close()
 
 
 def init_example():
-    list_transaction = open("usr_data/list_transactions.txt", "w")
+    list_transaction = open("backend/usr_data/list_transactions.txt", "w")
     n = ['rent', 'insurance', 'car', 'eat', 'clothes']
     for i in range(5):
         list_transaction.write(
@@ -34,15 +34,15 @@ class TransactionListControl:
 
     def __init__(self):
         self.transaction_list_work = []
-        list_transaction = open("usr_data/list_transactions.txt", "r")
+        list_transaction = open("backend/usr_data/list_transactions.txt", "r")
         for i in list_transaction:
             self.transaction_list_work.append(self.parser_string_to_transaction_item1(i[:-1]))
         list_transaction.close()
         # print(self.get_len_list_transaction())    works
         # print(self.transaction_list_work[5][2])
 
-    def add_transaction(self, amount, date, time_trans, name, category):
-        self.transaction_list_work.append([amount, date, time_trans, name, category,
+    def add_transaction(self, amount, date, time_trans, name, category, account):
+        self.transaction_list_work.append([amount, date, time_trans, name, category, account,
                                            "{0}{1}{2}".format(str(time.strftime("%d%m%y")),
                                                               str(time.strftime("%H%M%S")),
                                                               str(randint(1000000000, 9999999999)))])
@@ -74,7 +74,6 @@ class TransactionListControl:
 
     def find_after_ind_and_criteria(self, index, criteria):
         """
-
         :param index: is the index from the list (so 0 for costs till 5 id)
         :param criteria: what is asked more precisely
         :return:
@@ -146,6 +145,7 @@ class TransactionListControl:
         time_trans = []
         name = []
         category = []
+        account = []
         id = []
 
         while liste[index] != ",":
@@ -183,6 +183,13 @@ class TransactionListControl:
 
         index += 2
 
+        while liste[index] != ",":
+            if liste[index] != " " and liste[index] != "'":
+                account.append(liste[index])
+            index += 1
+
+        index += 2
+
         while liste[index] != "]":
             if liste[index] != " " and liste[index] != "'":
                 id.append(liste[index])
@@ -193,6 +200,7 @@ class TransactionListControl:
         result.append("".join(time_trans))
         result.append("".join(name))
         result.append("".join(category))
+        result.append("".join(account))
         result.append("".join(id))
         return result
 
@@ -215,7 +223,7 @@ print(t.transaction_list_work[-1][5] + " :id")
 print(t.change_transaction(3, t.transaction_list_work[-2][5], "", "motor"))
 t.save_listtransaction_file()"""
 # print(t.transaction_list_work)
-#print(len(t.transaction_list_work))
+# print(len(t.transaction_list_work))
 """print("now")
 for i in range(1000000):
     # print(i)

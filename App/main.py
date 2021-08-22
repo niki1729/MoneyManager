@@ -10,6 +10,18 @@ from pathlib import Path
 from kivy.lang import Builder
 from kivymd.app import MDApp
 
+from backend.main_backend import MainBackend
+
+from backend.categories_control import CategoriesControl, Category
+from backend.accounts_control import AccountsControl, Account
+from backend.transaction_list_control import TransactionListControl
+
+# TODO: Why is there a error: when the three lines are imported
+#  File "D:\Users\Nikita\Documents\MoneyManager\App\backend\categories_control.py", line 26, in __init__
+#      list_cat = open("usr_data/list_categories.txt", "a")
+#  FileNotFoundError: [Errno 2] No such file or directory: 'usr_data/list_categories.txt'
+
+
 # Window.size=(600, 700)
 
 
@@ -47,6 +59,7 @@ ScreenManager:
 
 class MoneyManager(MDApp):
     def __init__(self, **kwargs):
+        self.m_back = MainBackend(TransactionListControl(), CategoriesControl(), AccountsControl())
         super().__init__(**kwargs)
         self.title = "MoneyManager"
         self.icon = f"{os.environ['APP_ROOT']}/assets/images/MMApp.png"
@@ -57,10 +70,17 @@ class MoneyManager(MDApp):
 
         return Builder.load_string(KV)
 
+    def save_transaction(self, amount, date, time_trans, name, category, account):
+        self.m_back.save_transaction(amount, date, time_trans, name, category, account)
+
+
 
 MoneyManager().run()
-
 
 # TODO: on_enter: if not len(rv.data): root.function here you can have on enter function in the .kv file
 """spacing: "10dp"
 padding: "20dp"""
+
+"""Must be one of: ['Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue', 'LightBlue', 'Cyan', 'Teal', 'Green', 
+'LightGreen', 'Lime', 'Yellow', 'Amber', 'Orange', 'DeepOrange', 'Brown', 'Gray', 'BlueGray']
+"""

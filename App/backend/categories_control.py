@@ -1,10 +1,10 @@
 def init_exemple():
     lc = open("usr_data/list_categories.txt", "w")
-    lc.writelines(str(["rent", 500, 1000, 3]) + "\n")
-    lc.writelines(str(["clothing", 20.40, 50, 2]) + "\n")
     lc.writelines(str(["groceries", 50, 170, 1]) + "\n")
-    lc.writelines(str(["sport", 15, 45, 30]) + "\n")
+    lc.writelines(str(["clothing", 20.40, 50, 2]) + "\n")
+    lc.writelines(str(["rent", 500, 1000, 3]) + "\n")
     lc.writelines(str(["dance", 30, 70, 4]) + "\n")
+    lc.writelines(str(["sport", 15, 45, 30]) + "\n")
     lc.close()
 
 
@@ -23,7 +23,7 @@ class CategoriesControl:
     """
 
     def __init__(self):
-        list_cat = open("usr_data/list_categories.txt", "a")
+        list_cat = open("backend/usr_data/list_categories.txt", "a")
         list_cat.close()
 
         self.list_categories = []
@@ -31,7 +31,7 @@ class CategoriesControl:
 
     def get_list_categ_from_txt(self):
         """creates a list of Category Objects from the .txt file"""
-        list_cat = open("usr_data/list_categories.txt", "r")
+        list_cat = open("backend/usr_data/list_categories.txt", "r")
 
         for i in list_cat:
             intermediate = self.parser_string_to_category_item(i[:-1])
@@ -70,7 +70,7 @@ class CategoriesControl:
         len_txt_file = self.get_len_list_categories()
         len_transaction_list_work = len(self.list_categories)
 
-        list_transaction = open("usr_data/list_categories.txt", "w")
+        list_transaction = open("backend/usr_data/list_categories.txt", "w")
         diff = len_transaction_list_work - len_txt_file
         print("diff" + str(diff))
         if diff <= 0:
@@ -124,11 +124,11 @@ class CategoriesControl:
         :return gives the index from self.list_categories back of the highest priority account
         """
         high_prio = self.list_categories[0].priority
-        index = None
+        index = 0
         for i in range(len(self.list_categories)):
             if self.list_categories[i].priority < high_prio:
                 index = i
-                high_prio=self.list_categories[i].priority
+                high_prio = self.list_categories[i].priority
         return index
 
     def lowest_priority(self):
@@ -150,7 +150,7 @@ class CategoriesControl:
         :param index: what field needs to be changing? 0:name; 1:spend_this_month; 2:max_per_month; 3: priority
         :param new_info: it's clear
         """
-        self.find_category_by_name(name).change_category_self(index, new_info)
+        self.find_category_by_name(name).change_account_self(index, new_info)
 
     def change_two_categories_by_prio(self, ind1, ind2):
         """
@@ -167,12 +167,92 @@ class CategoriesControl:
 
         self.list_categories_by_priority()
 
+    def enter_after_prio(self, index, prio):
+        """
+        :param index: of the element that is already in the list but needs to change priority drastically
+        :param prio: the new prio, will be +1. more precis, its the prio of the one item after what the new item is
+            placed
+        :return:
+        """
+        element = self.list_categories[index]
+        print(self.list_categories[index], "printed what need to be element")
+        print(element.name, "element, why without name")
+        print(self.list_categories[self.lowest_priority()].priority, "enter_after_prio")
+        self.list_categories.pop(index)  # pop with index
+        print(self.list_categories, "after pop")
+        if prio > self.list_categories[self.lowest_priority()].priority:
+            element.priority = self.list_categories[self.lowest_priority()].priority + 1
+            print(element.priority, "element prio")
+            self.list_categories.append(element)
+            # self.change_priority_after_index(index)
+            print("prio>lowest")
+            return
+        print(self.highest_priority(), "hi prio")
+        if prio < self.list_categories[self.highest_priority()].priority:
+            print("prio<highest prio")
+            element.priority = self.list_categories[self.highest_priority()].priority - 1
+            result = [element]
+            for i in self.list_categories:
+                result.append(i)
+
+            self.list_categories = result
+            print(result)
+            return
+        else:
+            element.priority = prio
+            print("mid")
+            ind = 0
+            result = []
+            element.priority = prio + 1
+            print(self.list_categories, "after_else")
+
+            while self.list_categories[ind].priority <= prio:
+                print(self.list_categories[ind].name)
+                result.append(self.list_categories[ind])
+                ind += 1
+            print(element.name, element.priority)
+            print(element, "element")
+            result.append(element)
+            print(result, "result before finish")
+            for i in range(len(self.list_categories) - ind):
+                self.list_categories[i + ind].priority += 1
+                print(self.list_categories[i + ind].name, self.list_categories[i + ind].priority)
+
+                result.append(self.list_categories[i + ind])
+
+            self.list_categories = result
+
+    def change_priority_after_index(self, ind):
+        """
+        this function will add to all self.list_categories elements after the index +1 to priorities
+        :param ind: after what index from self.list_categories the priority needs to change
+        :return: nothing, self.list_categories has now new priorities
+        """
+        ind += 1
+        # TODO see better with +1 or -1 here
+        for i in range(len(self.list_categories) - ind):
+            self.list_categories[i + ind].priority += 1
+
+    def rearrange_priorities(self):
+        """
+        :return: the self.list_accounts with priorities starting from 1 till len(self.list_accounts
+        """
+        result = []
+        prio = 1
+        for i in self.list_categories:
+            i.priority = prio
+            print(i.priority)
+            prio += 1
+            result.append(i)
+
+        self.list_categories = result
+
     @staticmethod
     def get_len_list_categories():
         """
         :return: the length of the list_categories.txt
         """
-        file = open("usr_data/list_categories.txt", "r")
+        file = open("backend/usr_data/list_categories.txt", "r")
         index = 0
         mot = "a"
         while mot != '':
@@ -251,7 +331,7 @@ class Category:
 
 
 # init_exemple()
-cc = CategoriesControl()
+# cc = CategoriesControl()
 # cc.add_category("sport", 15, 45, 30)
 # print(cc.list_categories[cc.lowest_priority()].name)
 # print(cc.list_categories[3].name, "last")
@@ -261,6 +341,17 @@ cc = CategoriesControl()
 # cc.change_category("rent", 2, 2000)
 # cc.list_categories_by_priority()
 # print(cc.find_category_by_name("dance"))
-cc.change_two_categories_by_prio(1, 4)
-cc.change_two_categories_by_prio(3, 2)
-cc.save_listcategories_to_file()
+# cc.change_two_categories_by_prio(1, 4)
+# cc.change_two_categories_by_prio(3, 2)
+# cc.change_priority_after_index()
+# cc.enter_after_prio(1, 3)
+# cc.rearrange_priorities()
+# cc.save_listcategories_to_file()
+
+"""
+['groceries', 50.0, 170.0, 1]
+['clothing', 20.4, 50.0, 2]
+['rent', 500.0, 1000.0, 3]
+['dance', 30.0, 70.0, 4]
+['sport', 15.0, 45.0, 30]
+"""

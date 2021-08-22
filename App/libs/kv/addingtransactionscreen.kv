@@ -1,18 +1,27 @@
+#: import environ os.environ
+#: import gch kivy.utils.get_color_from_hex
+
 <AddingTransactionScreen>:
+    md_bg_color: gch("#33333d")
+
     MDBoxLayout:
         orientation: "vertical"
         MDToolbar:
             title: "Add a Transaction"
             id: toolbar
             pos_hint: {"top": 1}
-        
             elevation: 10
             right_action_items: [['close-circle-outline', lambda x: root.abort_transaction()], ['content-save', lambda x: root.save_transaction()]]
         
         
         FloatLayout:
+            spacing: dp(10)
             BoxLayout:
                 orientation: "vertical"
+
+                Label:
+                    size_hint_y: 0.2
+
                 BoxLayout:
                     size_hint_y: 1
                     orientation: "horizontal"
@@ -23,7 +32,7 @@
                         id: date_of_transaction_inp
                         hint_text: "Date of the transaction"
                         size_hint_x: 3
-                        font_size: 40
+                        font_size: 45
 
                     PlaceHolderLabel:
                         size_hint_x: 0.5
@@ -32,21 +41,90 @@
                         id: time_of_transaction_inp
                         hint_text: "Time of the transaction"
                         size_hint_x: 3
-                        font_size: 30
+                        font_size: 35
 
                     PlaceHolderLabel:
 
+                BoxLayout:
+                    PlaceHolderLabel:
+
+                    MDTextField:
+                        id: amount_text_field
+                        hint_text: "Amount"
+                        input_filter: "float"
+                        helper_text: "- for spend, nothing for gain, dot (.) ex: 20.30$"
+                        helper_text_mode: "on_focus"
+                        size_hint: (4, 1)
+                        font_size: 35
+                    PlaceHolderLabel:
 
                 BoxLayout:
-                    size_hint_y: 5
+                    PlaceHolderLabel:
+
+                    MDTextField:
+                        id: name_text_field
+                        hint_text: "Name"
+                        size_hint: (4, 1)
+                        font_size: 35
+
+                    PlaceHolderLabel:
+
+                Label:
+                    size_hint_y: 0.2
+
+
+                BoxLayout:
+                    size_hint_y: 1
+                    orientation: "horizontal"
+
+                    padding: dp(20)
+
+                    Label:
+                        text: "Category"
+                        font_size: 20
+
+                    PlaceHolderLabel:
+
+                    MDDropDownItem:
+                        size_hint_x: 3
+                        id: drop_down_category
+                        items:""
+                        current_item: ""
+
+
+                BoxLayout:
+                    size_hint_y: 1
+                    orientation: "horizontal"
+
+                    padding: dp(20)
+
+                    Label:
+                        text: "Account"
+                        font_size: 20
+
+                    PlaceHolderLabel:
+
+                    MDDropDownItem:
+                        size_hint_x:3
+                        id: drop_down_account
+                        items: ""
+                        current_item: ""
+
+                BoxLayout:
+                    size_hint_y: 1
                     orientation: "vertical"
+                    paddint: dp(20)
                     BoxLayout:
                         size_hint_y: 1
                         id: boxlayout_every_month_payment
 
                         Label:
+                            size_hint_x: 0.2
+
+                        Label:
                             size_hint_x: 3
                             text: "Payment is due each month"
+                            font_size: 20
 
                         MDCheckbox:
                             size_hint_x: 1
@@ -57,29 +135,20 @@
                         PlaceHolderLabel:
                             size_hint_x: 1.5
                             text: "on the: "
+                            font_size: 20
 
                         MDTextField:
                             size_hint_x: 3
                             id: every_month_payment_date_text_field
                             text_hint: "Date when the monthly payment is due"
                             disabled: True
+                            font_size: 20
+
 
                         PlaceHolderLabel:
 
 
-                    Label:
-                        size_hint_y: 2
-                        id: welcome_label
-                        text: "Welcome to Transaction!"
-                        font_size: 40
-                        color: 1,0,1,1
-                    Button:
-                        size_hint_y: 2
-                        text: "Press me for fun"
-                        color: 1, 1, 0, 1
-                        color_before: 1,0,0,1
-                        background_down: "grey_color.png"
-                        on_release: root.change_color()
+
 
 
         

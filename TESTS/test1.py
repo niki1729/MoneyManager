@@ -132,6 +132,7 @@ def parser_string_to_transaction_item1(liste):
 
 print("result:" + parser_string_to_transaction_item1(l))
 """
+
 """l=["1", "2", "3"]
 l.pop(2)
 # l.remove("2")
@@ -275,7 +276,12 @@ def lowest_priority(liste):
     return index
 
 
-liste = [[1, "1"], [2, "2"], [3, "3"], [5, "5"]]
+"""liste = [[1, "1"], [2, "2"], [3, "3"], [5, "5"]]
 
-liste = enter_after_prio(liste, 1, 3)
-print(liste)
+# liste = enter_after_prio(liste, 1, 3)
+# print(liste)
+print(int(-20))"""
+
+from datetime import date
+
+print(date(21, 8, 2))
