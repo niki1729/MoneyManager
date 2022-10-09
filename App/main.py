@@ -40,7 +40,7 @@ KV = """
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import RegisterScreen libs.baseclass.register_screen.RegisterScreen
 #:import RootScreen libs.baseclass.root_screen.RootScreen
-#: import AddingTransactionScreen libs.baseclass.addingtransactionscreen.AddingTransactionScreen
+#:import AddingTransactionScreen libs.baseclass.addingtransactionscreen.AddingTransactionScreen
 
 ScreenManager:
     transition: FadeTransition()
